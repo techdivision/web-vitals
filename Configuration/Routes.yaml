@@ -1,0 +1,10 @@
+-
+  name: 'webvitals tracking'
+  uriPattern: 'webvitals/track'
+  defaults:
+    '@package':    'TechDivision.WebVitals'
+    '@controller': 'Tracking'
+    '@action':     'track'
+    '@format':     'html'
+  appendExceedingArguments: true
+  httpMethods: ['GET', 'POST', 'PUT']

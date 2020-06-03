@@ -1,0 +1,31 @@
+prototype(TechDivision.WebVitals:Component.Bar) < prototype(Neos.Fusion:Component) {
+    name = null
+    low = null
+    medium = null
+    high = null
+    thresholdMin = null
+    thresholdMax = null
+    unit = null
+    fromDate = null
+    toDate = null
+    total = null
+
+    renderer = afx`
+        <div class="bar-wrapper">
+            <div class="bar">
+                <span class="bar__legend bar__left" style={'width:' + props.low + '%' }>{props.thresholdMin}{props.unit}&nbsp;&rsaquo;</span>
+                <span class="bar__legend bar__middle" style={'width:' + props.medium + '%' }></span>
+                <span class="bar__legend bar__right" style={'width:' + props.high + '%' }>&lsaquo;&nbsp;{props.thresholdMax}{props.unit}</span>
+            </div>
+            <div class="bar">
+                <span class="bar__section bar__low" style={'width:' + props.low + '%' }>{props.low}%</span>
+                <span class="bar__section bar__medium" style={'width:' + props.medium + '%' }>{props.medium}%</span>
+                <span class="bar__section bar__high" style={'width:' + props.high + '%' }>{props.high}%</span>
+            </div>
+            <div class="infopanel">
+                <div class="infopanel__date">{props.fromDate} - {props.toDate}</div>
+                <div class="infopanel__total">{props.total}</div>
+            </div>
+        </div>
+    `
+}

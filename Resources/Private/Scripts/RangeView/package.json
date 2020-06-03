@@ -1,0 +1,13 @@
+{
+    "scripts": {
+        "build": "neos-react-scripts build",
+        "watch": "neos-react-scripts watch"
+    },
+    "neos": {
+        "buildTargetDirectory": "../../../Public/RangeView"
+    },
+    "dependencies": {
+        "@neos-project/neos-ui-extensibility": "^5.2",
+        "lodash.isequal": "^4.5.0"
+    }
+}

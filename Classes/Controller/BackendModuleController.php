@@ -1,0 +1,87 @@
+<?php
+declare(strict_types = 1);
+
+namespace TechDivision\WebVitals\Controller;
+
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Fusion\View\FusionView;
+use Neos\Neos\Controller\CreateContentContextTrait;
+use Neos\Neos\Domain\Model\Site;
+use TechDivision\WebVitals\Domain\Repository\WebVitalMeasureRepository;
+use TechDivision\WebVitals\Service\Dto\AbstractMeasureDto;
+use TechDivision\WebVitals\Service\Dto\CumulativeLayoutShiftMeasureDto;
+use TechDivision\WebVitals\Service\Dto\FirstContentfulPaintMeasureDto;
+use TechDivision\WebVitals\Service\Dto\FirstInputDelayMeasureDto;
+use TechDivision\WebVitals\Service\Dto\LargestContentfulPaintMeasureDto;
+use TechDivision\WebVitals\Service\Dto\TimeToFirstByteMeasureDto;
+
+/**
+ * This file is part of the TechDivision.WebVitals package.
+ *
+ * TechDivision - neos@techdivision.com
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+
+class BackendModuleController extends ActionController
+{
+
+    use CreateContentContextTrait;
+
+    /**
+     * @var string
+     */
+    protected $defaultViewObjectName = FusionView::class;
+
+    /**
+     * @Flow\Inject
+     * @var WebVitalMeasureRepository
+     */
+    protected $webVitalMeasureRepository;
+
+    /**
+     * @return void
+     */
+    public function indexAction()
+    {
+        $this->view->assignMultiple([
+            LargestContentfulPaintMeasureDto::$shortName => $this->getData(new LargestContentfulPaintMeasureDto()),
+            FirstInputDelayMeasureDto::$shortName => $this->getData(new FirstInputDelayMeasureDto()),
+            CumulativeLayoutShiftMeasureDto::$shortName => $this->getData(new CumulativeLayoutShiftMeasureDto()),
+            TimeToFirstByteMeasureDto::$shortName => $this->getData(new TimeToFirstByteMeasureDto()),
+            FirstContentfulPaintMeasureDto::$shortName => $this->getData(new FirstContentfulPaintMeasureDto())
+        ]);
+    }
+
+    /**
+     * @param AbstractMeasureDto $dto
+     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     */
+    protected function getData(AbstractMeasureDto $dto): array
+    {
+        $contentContext = $this->createContentContext('live');
+        /** @var Site $currentSite */
+        $currentSite = $contentContext->getCurrentSite();
+        $currentSiteNodeName = $currentSite->getNodeName();
+
+        $fromDate = new \DateTime('3 months ago');
+        $total = $this->webVitalMeasureRepository->getNumberOfTotalMeasuresForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate);
+        $low = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThresholdForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate, $dto::$minimumThreshold);
+        $lowAndMedium = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThresholdForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate, $dto::$maximumThreshold);
+        $high = $this->webVitalMeasureRepository->getNumberOfMeasuresHigherThanThresholdForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate, $dto::$maximumThreshold);
+        $toDate = new \DateTime();
+
+        $dto->setNumberOfTotalMeasures($total);
+        $dto->setNumberOfLowMeasures($low);
+        $dto->setNumberOfMediumMeasures($lowAndMedium - $low);
+        $dto->setNumberOfHighMeasures($high);
+        $dto->setFromDate($fromDate);
+        $dto->setToDate($toDate);
+
+        return $dto->__toArray();
+    }
+}

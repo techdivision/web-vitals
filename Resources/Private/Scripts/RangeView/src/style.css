@@ -1,0 +1,113 @@
+.neos-module-wrap .widget-container {
+    background-color: var(--colors-ContrastNeutral);
+    margin-bottom: var(--wideMargin);
+}
+
+.neos-module-wrap .widget-header {
+    display: flex;
+    border-bottom: 1px solid var(--colors-ContrastDarker);
+    margin-bottom: var(--defaultMargin);
+}
+
+.neos-module-wrap .widget-footer {
+    border-top: 1px solid var(--colors-ContrastDarker);
+    margin-top: var(--defaultMargin);
+}
+
+.neos-module-wrap .infopanel,
+.neos-module-wrap .widget-desc {
+    max-width: 800px;
+}
+
+.neos-module-wrap .widget-header,
+.neos-module-wrap .widget-desc,
+.neos-module-wrap .widget-footer,
+.neos-module-wrap .bar-wrapper {
+    padding: 10px 20px;
+}
+
+.bar {
+    display: flex;
+    height: 30px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 800px;
+}
+
+.bar__legend,
+.bar__section {
+    display: inline-block;
+    font-size: 10px;
+    padding: 5px 4px;
+    text-align: center;
+    min-width: 20%;
+}
+
+.neos-module-wrap .bar__legend,
+.neos-module-wrap .bar__section {
+    padding: 8px 4px;
+}
+
+/* for full overview */
+.neos-module-wrap .bar__legend,
+.neos-module-wrap .bar__section {
+    min-width: 5%;
+}
+
+.bar__left {
+    border-right: 1px solid #fff;
+    text-align: right;
+}
+
+.bar__right {
+    border-left: 1px solid #fff;
+    text-align: left;
+}
+
+.bar__low {
+    background-color: var(--colors-Success);
+}
+.bar__low:hover {
+    background-color: var(--colors-SuccessHover);
+}
+
+.bar__medium {
+    background-color: var(--colors-Warn);
+    color: black;
+}
+
+.bar__medium:hover {
+    background-color: var(--colors-WarnHover);
+}
+
+.bar__high {
+    background-color: var(--colors-Error);
+}
+
+.bar__high:hover {
+    background-color: var(--colors-ErrorHover);
+}
+
+.infopanel {
+    display: flex;
+    padding-top: var(--defaultMargin);
+}
+
+.infopanel__date {
+    flex-grow: 1;
+}
+
+.infopanel__total {
+    background: var(--colors-ContrastBrighter);
+    color: var(--colors-ContrastDarkest);
+    font-size: 8px;
+    min-width:20px;
+    padding: 2px;
+    text-align: center;
+}
+
+.infopanel__total:after {
+    content: "x";
+}
+
+
