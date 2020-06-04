@@ -1,0 +1,151 @@
+prototype(TechDivision.WebVitals:Index) < prototype(Neos.Fusion:Component) {
+
+    # add the DocType as processor; because it will break AFX.
+    @process.addDocType = ${'<!DOCTYPE html>' + value}
+
+    head = Neos.Fusion:Join {
+        titleTag = Neos.Fusion:Tag {
+            tagName = 'title'
+        }
+        metaTags = Neos.Fusion:Component {
+            renderer = afx`
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+                <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+            `
+        }
+
+        # Script and CSS includes in the head should go here
+        stylesheets = Neos.Fusion:Join {
+            // backport of css vars for 4.x versions (not necessarily maintained)
+            neosLiteFallback = Neos.Fusion:Tag {
+                tagName = 'link'
+                attributes {
+                    rel = 'stylesheet'
+                    href = Neos.Fusion:ResourceUri {
+                        path = 'resource://TechDivision.WebVitals/Public/Styles/NeosLiteCssVars.css'
+                    }
+                }
+            }
+            neosLite = Neos.Fusion:Tag {
+                tagName = 'link'
+                attributes {
+                    rel = 'stylesheet'
+                    href = Neos.Fusion:ResourceUri {
+                        path = 'resource://Neos.Neos/Public/Styles/Lite.css'
+                    }
+                }
+            }
+            plugin = Neos.Fusion:Tag {
+                tagName = 'style'
+                content = ${File.readFile('resource://TechDivision.WebVitals/Private/Scripts/RangeView/src/style.css')}
+            }
+        }
+        javascripts = Neos.Fusion:Join
+    }
+
+    body = Neos.Fusion:Component{
+        renderer = afx`
+            <main>
+                <div class="widget-container">
+                    <div class="widget-header">Web Vitals - Essential metrics for a healthy site</div>
+                    <p class="widget-desc">
+                        Web Vitals can help you quantify the experience of your site and identify opportunities to improve.<br />
+                    </p>
+                    <div class="widget-footer"><a href="https://web.dev/vitals/" target="_blank" rel="noopener"><i class="fas fa-external-link-square-alt"></i> More about WebVitals</a></div>
+                </div>
+                <div class="widget-container">
+                    <div class="widget-header">Largest Contentful Paint (LCP) - Core Web Vital</div>
+                    <TechDivision.WebVitals:Component.Bar
+                        low={lcp.data.percentage.low}
+                        medium={lcp.data.percentage.medium}
+                        high={lcp.data.percentage.high}
+                        thresholdMin={lcp.data.threshold.min}
+                        thresholdMax={lcp.data.threshold.max}
+                        unit={lcp.data.unit}
+                        fromDate={lcp.data.fromDate}
+                        toDate={lcp.data.toDate}
+                        total={lcp.data.total} />
+                    <p class="widget-desc">Largest Contentful Paint (LCP) is an important, user-centric metric for measuring perceived load speed because it marks the point in the page load timeline when the page's main content has likely loaded—a fast LCP helps reassure the user that the page is useful.</p>
+                    <div class="widget-footer"><a href="https://web.dev/lcp/" target="_blank" rel="noopener"><i class="fas fa-external-link-square-alt"></i> More about LCP</a></div>
+                </div>
+                <div class="widget-container">
+                    <div class="widget-header">First Input Delay (FID) - Core Web Vital</div>
+                    <TechDivision.WebVitals:Component.Bar
+                        low={fid.data.percentage.low}
+                        medium={fid.data.percentage.medium}
+                        high={fid.data.percentage.high}
+                        thresholdMin={fid.data.threshold.min}
+                        thresholdMax={fid.data.threshold.max}
+                        unit={fid.data.unit}
+                        fromDate={fid.data.fromDate}
+                        toDate={fid.data.toDate}
+                        total={fid.data.total} />
+                    <p class="widget-desc">First Input Delay (FID) is an important, user-centric metric for measuring load responsiveness because it quantifies the experience users feel when trying to interact with unresponsive pages—a low FID helps ensure that the page is usable.</p>
+                    <div class="widget-footer"><a href="https://web.dev/fid/" target="_blank" rel="noopener"><i class="fas fa-external-link-square-alt"></i> More about FID</a></div>
+                </div>
+                <div class="widget-container">
+                    <div class="widget-header">Cumulative Layout Shift (CLS) - Core Web Vital</div>
+                    <TechDivision.WebVitals:Component.Bar
+                        name={cls.data.name}
+                        low={cls.data.percentage.low}
+                        medium={cls.data.percentage.medium}
+                        high={cls.data.percentage.high}
+                        thresholdMin={cls.data.threshold.min}
+                        thresholdMax={cls.data.threshold.max}
+                        unit={cls.data.unit}
+                        fromDate={cls.data.fromDate}
+                        toDate={cls.data.toDate}
+                        total={cls.data.total} />
+                    <p class="widget-desc">First Input Delay (FID) is an important, user-centric metric for measuring load responsiveness because it quantifies the experience users feel when trying to interact with unresponsive pages—a low FID helps ensure that the page is usable.</p>
+                    <div class="widget-footer"><a href="https://web.dev/cls/" target="_blank" rel="noopener"><i class="fas fa-external-link-square-alt"></i> More about CLS</a></div>
+                </div>
+                <div class="widget-container">
+                    <div class="widget-header">Time to first byte (TTFB)</div>
+                    <TechDivision.WebVitals:Component.Bar
+                        low={ttfb.data.percentage.low}
+                        medium={ttfb.data.percentage.medium}
+                        high={ttfb.data.percentage.high}
+                        thresholdMin={ttfb.data.threshold.min}
+                        thresholdMax={ttfb.data.threshold.max}
+                        unit={ttfb.data.unit}
+                        fromDate={ttfb.data.fromDate}
+                        toDate={ttfb.data.toDate}
+                        total={ttfb.data.total} />
+                    <p class="widget-desc">The time that it takes for a user's browser to receive the first byte of page content.</p>
+                    <div class="widget-footer"><a href="https://web.dev/time-to-first-byte/" target="_blank" rel="noopener"><i class="fas fa-external-link-square-alt"></i> More about TTFB</a></div>
+                </div>
+                <div class="widget-container">
+                    <div class="widget-header">First Contentful Paint (FCP)</div>
+                    <TechDivision.WebVitals:Component.Bar
+                        low={fcp.data.percentage.low}
+                        medium={fcp.data.percentage.medium}
+                        high={fcp.data.percentage.high}
+                        thresholdMin={fcp.data.threshold.min}
+                        thresholdMax={fcp.data.threshold.max}
+                        unit={fcp.data.unit}
+                        fromDate={fcp.data.fromDate}
+                        toDate={fcp.data.toDate}
+                        total={fcp.data.total} />
+                    <p class="widget-desc">First Contentful Paint (FCP) is an important, user-centric metric for measuring perceived load speed because it marks the first point in the page load timeline where the user can see anything on the screen—a fast FCP helps reassure the user that something is happening.</p>
+                    <div class="widget-footer"><a href="https://web.dev/fcp/" target="_blank" rel="noopener"><i class="fas fa-external-link-square-alt"></i> More about FCP</a></div>
+                </div>
+            </main>
+        `
+
+    }
+
+    renderer = afx`
+        <html>
+        <head>
+            <meta charset="UTF-8" />
+            {props.head}
+        </head>
+        <body>
+        {props.body}
+        </body>
+        </html>
+    `
+
+    # enable Neos.Fusion:Debug helper
+    @process.debugDump = Neos.Fusion:DebugDump
+}

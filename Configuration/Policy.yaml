@@ -1,0 +1,19 @@
+privilegeTargets:
+  'Neos\Neos\Security\Authorization\Privilege\ModulePrivilege':
+    'TechDivision.WebVitals:BackendModule':
+      matcher: 'management/web-vitals'
+  'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+    'TechDivision.WebVitals.AllTrackingControllerActions':
+      matcher: 'method(TechDivision\WebVitals\Controller\TrackingController->.*Action())'
+
+roles:
+  'Neos.Flow:Everybody':
+    privileges:
+      -
+        privilegeTarget: 'TechDivision.WebVitals.AllTrackingControllerActions'
+        permission: GRANT
+  'Neos.Neos:Editor':
+    privileges:
+      -
+        privilegeTarget: 'TechDivision.WebVitals:BackendModule'
+        permission: GRANT

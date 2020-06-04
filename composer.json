@@ -1,0 +1,19 @@
+{
+    "name": "techdivision/web-vitals",
+    "type": "neos-plugin",
+    "description": "WebVitals measurement",
+    "require": {
+        "neos/neos": "^4.3 || ^5.0",
+        "neos/neos-ui": "*"
+    },
+    "extra": {
+        "neos": {
+            "package-key": "TechDivision.WebVitals"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "TechDivision\\WebVitals\\": "Classes"
+        }
+    }
+}

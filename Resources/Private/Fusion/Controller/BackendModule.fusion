@@ -1,0 +1,3 @@
+TechDivision.WebVitals.BackendModuleController {
+    index = TechDivision.WebVitals:Index
+}

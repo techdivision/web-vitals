@@ -1,0 +1,103 @@
+#
+# Add the WebVitals mixin to Neos.Neos:Document
+#
+'Neos.Neos:Document':
+  superTypes:
+    'TechDivision.WebVitals:StatsTabMixin': true
+
+'Neos.Neos:Shortcut':
+  superTypes:
+    'TechDivision.WebVitals:StatsTabMixin': false
+
+#
+# Mixin configuring the tab for the inspector
+#
+'TechDivision.WebVitals:StatsTabMixin':
+  abstract: true
+  ui:
+    inspector:
+      tabs:
+        stats:
+          label: 'Statistics'
+          position: 100
+          icon: 'icon-line-chart icon-chart-line'
+      groups:
+        webVitals:
+          label: 'WebVitals'
+          icon: 'icon-line-chart'
+          position: 10
+          tab: 'stats'
+      views:
+        largestContentfulPaint:
+          label: 'LCP'
+          help:
+            message: 'Loading, less than 2.5s desired; everything above 4.0s is inacceptable'
+          group: 'webVitals'
+          position: 10
+          view: 'TechDivision.WebVitals/RangeView'
+          viewOptions:
+            title: 'Largest contentful paint'
+            subtitle: '[Core]'
+            unit: 'ms'
+            dataSource: 'WebVitals'
+            arguments:
+              measure: 'lcp'
+              startDate: '3 months ago'
+        firstInputDelay:
+          label: 'FID'
+          help:
+            message: 'Interactivity, less than 100ms desired, everything above 300ms is inacceptable'
+          group: 'webVitals'
+          position: 20
+          view: 'TechDivision.WebVitals/RangeView'
+          viewOptions:
+            title: 'First Input Delay'
+            subtitle: '[Core]'
+            unit: 'ms'
+            dataSource: 'WebVitals'
+            arguments:
+              measure: 'fid'
+              startDate: '3 months ago'
+        cumulativeLayoutShift:
+          label: 'CLS'
+          help:
+            message: 'visual stability, less than 0.1 desired'
+          group: 'webVitals'
+          position: 30
+          view: 'TechDivision.WebVitals/RangeView'
+          viewOptions:
+            title: 'Cumulative layout shift'
+            subtitle: '[Core]'
+            unit: ''
+            dataSource: 'WebVitals'
+            arguments:
+              measure: 'cls'
+              startDate: '3 months ago'
+        timeToFirstByte:
+          label: 'TTFB'
+          help:
+            message: 'Server response time, less than 200ms desirable, above 600ms inacceptable'
+          group: 'webVitals'
+          position: 40
+          view: 'TechDivision.WebVitals/RangeView'
+          viewOptions:
+            title: 'Time to first byte'
+            dataSource: 'WebVitals'
+            unit: 'ms'
+            arguments:
+              measure: 'ttfb'
+              startDate: '3 months ago'
+        firstContentfulPaint:
+          label: 'FCP'
+          help:
+            message: 'The time from when the page starts loading to when any part of the page content is rendered on the screen, should be within 1s'
+          group: 'webVitals'
+          position: 50
+          view: 'TechDivision.WebVitals/RangeView'
+          viewOptions:
+            title: 'First contentful paint'
+            dataSource: 'WebVitals'
+            unit: 'ms'
+            arguments:
+              measure: 'fcp'
+              startDate: '3 months ago'

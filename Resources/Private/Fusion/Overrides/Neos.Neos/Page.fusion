@@ -1,0 +1,27 @@
+prototype(Neos.Neos:Page) {
+    webVitalsScript = Neos.Fusion:Tag {
+        @position = 'before webVitalsTracking'
+        tagName = 'script'
+        attributes {
+            src = Neos.Fusion:ResourceUri {
+                path = 'resource://TechDivision.WebVitals/Public/JavaScript/Scripts.js'
+            }
+            defer = true
+        }
+        @if.trackingEnabled = ${Configuration.setting('TechDivision.WebVitals.enableTracking')}
+        @if.notInBackend = ${!node.context.inBackend}
+    }
+
+    webVitalsTracking = Neos.Fusion:Tag {
+        @position = 'before closingBodyTag'
+        tagName = 'script'
+        attributes {
+            data-neos-sitereference = ${site.nodeName}
+            data-neos-nodereference = ${node.identifier}
+            data-neos-nodedimensions = ${WebVitals.Dimensions.getHash(node)}
+        }
+        content = ${File.readFile('resource://TechDivision.WebVitals/Public/JavaScript/Tracking.js')}
+        @if.trackingEnabled = ${Configuration.setting('TechDivision.WebVitals.enableTracking')}
+        @if.notInBackend = ${!node.context.inBackend}
+    }
+}
