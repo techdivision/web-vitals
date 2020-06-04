@@ -1,6 +1,8 @@
 TechDivision:
   WebVitals:
     enableTracking: true
+    backendModule:
+      defaultFromDate: '3 months ago'
 
 Neos:
   Neos:

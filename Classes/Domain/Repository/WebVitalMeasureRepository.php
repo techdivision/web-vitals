@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace TechDivision\WebVitals\Domain\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\Repository;
 

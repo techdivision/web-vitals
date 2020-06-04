@@ -53,9 +53,10 @@ class TrackingController extends ActionController
     }
 
     /**
-     * @param WebVitalMeasure $webVitals
+     * @param WebVitalMeasure $webVitalMeasure
+     * @return false|string
      */
-    public function trackAction(WebVitalMeasure $webVitalMeasure)
+    public function trackAction(WebVitalMeasure $webVitalMeasure): ?string
     {
         $httpRequest = $this->request->getHttpRequest();
         // we only allow referred requests.

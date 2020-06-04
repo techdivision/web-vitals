@@ -1,5 +1,4 @@
 prototype(Neos.Neos:Page) {
-    head.alternateLanguageLinks >
     webVitalsScript = Neos.Fusion:Tag {
         @position = 'before webVitalsTracking'
         tagName = 'script'

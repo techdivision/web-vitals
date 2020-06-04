@@ -5,7 +5,6 @@ namespace TechDivision\WebVitals\Controller;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\CreateContentContextTrait;
 use Neos\Neos\Domain\Model\Site;
@@ -31,6 +30,13 @@ class BackendModuleController extends ActionController
 {
 
     use CreateContentContextTrait;
+
+
+    /**
+     * @Flow\InjectConfiguration(package="TechDivision.WebVitals", path="backendModule.defaultFromDate")
+     * @var string
+     */
+    protected $defaultFromDate;
 
     /**
      * @var string
@@ -68,7 +74,13 @@ class BackendModuleController extends ActionController
         $currentSite = $contentContext->getCurrentSite();
         $currentSiteNodeName = $currentSite->getNodeName();
 
-        $fromDate = new \DateTime('3 months ago');
+        $fromDateArgument = isset($this->defaultFromDate) ? $this->defaultFromDate : '3 months ago';
+        try {
+            $fromDate = new \DateTime($fromDateArgument);
+        } catch (\Exception $exception) {
+            return ['error' => ['message' => 'Invalid date format for setting "TechDivision.WebVitals.backendModule.defaultFromDate"', 'code' => 1591263264]];
+        }
+
         $total = $this->webVitalMeasureRepository->getNumberOfTotalMeasuresForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate);
         $low = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThresholdForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate, $dto::$minimumThreshold);
         $lowAndMedium = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThresholdForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate, $dto::$maximumThreshold);
