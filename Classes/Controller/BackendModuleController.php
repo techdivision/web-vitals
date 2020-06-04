@@ -78,7 +78,7 @@ class BackendModuleController extends ActionController
         $fromDateArgument = isset($this->defaultFromDate) ? $this->defaultFromDate : '3 months ago';
         try {
             $fromDate = new \DateTime($fromDateArgument);
-        } catch (\InvalidConfigurationException $exception) {
+        } catch (\Exception $exception) {
             $this->throwStatus(500, null, 'Invalid date format for setting "TechDivision.WebVitals.backendModule.defaultFromDate"');
         }
 
