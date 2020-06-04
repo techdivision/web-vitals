@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace TechDivision\WebVitals\Controller;
 
+use TechDivision\WebVitals\Exception\InvalidConfigurationException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Fusion\View\FusionView;
@@ -77,8 +78,8 @@ class BackendModuleController extends ActionController
         $fromDateArgument = isset($this->defaultFromDate) ? $this->defaultFromDate : '3 months ago';
         try {
             $fromDate = new \DateTime($fromDateArgument);
-        } catch (\Exception $exception) {
-            return ['error' => ['message' => 'Invalid date format for setting "TechDivision.WebVitals.backendModule.defaultFromDate"', 'code' => 1591263264]];
+        } catch (\InvalidConfigurationException $exception) {
+            $this->throwStatus(500, null, 'Invalid date format for setting "TechDivision.WebVitals.backendModule.defaultFromDate"');
         }
 
         $total = $this->webVitalMeasureRepository->getNumberOfTotalMeasuresForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate);
