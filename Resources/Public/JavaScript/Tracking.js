@@ -1,19 +1,19 @@
 addEventListener('DOMContentLoaded', function() {
-    let siteReference = document.querySelector('script[data-neos-sitereference]').getAttribute('data-neos-sitereference');
-    let nodeReference = document.querySelector('script[data-neos-nodereference]').getAttribute('data-neos-nodereference');
-    let nodeDimensions = document.querySelector('script[data-neos-nodedimensions]').getAttribute('data-neos-nodedimensions');
-    let api = '/webvitals/track/';
+    var siteReference = document.querySelector('script[data-neos-sitereference]').getAttribute('data-neos-sitereference'),
+        nodeReference = document.querySelector('script[data-neos-nodereference]').getAttribute('data-neos-nodereference'),
+        nodeDimensions = document.querySelector('script[data-neos-nodedimensions]').getAttribute('data-neos-nodedimensions'),
+        api = '/webvitals/track/';
 
     function trackWebVital(metric) {
         if (navigator.sendBeacon) {
-            let data = new FormData();
+            var data = new FormData();
             data.append('webVitalMeasure[nodeReference]', nodeReference);
             data.append('webVitalMeasure[nodeDimensions]', nodeDimensions);
             data.append('webVitalMeasure[siteReference]', siteReference);
             data.append('webVitalMeasure[' + metric.name.toLowerCase() + ']', metric.value);
             navigator.sendBeacon(api, data);
         } else {
-            let webVitalsImg = document.createElement('img');
+            var webVitalsImg = document.createElement('img');
             webVitalsImg.height = 1;
             webVitalsImg.width = 1;
             webVitalsImg.alt = '';
