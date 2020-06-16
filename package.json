@@ -10,7 +10,18 @@
     }
   ],
   "dependencies": {
-    "web-vitals": "*"
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "rollup-plugin-uglify": "^6.0.4",
+    "web-vitals-reporter": "*",
+    "@rollup/plugin-babel": "^5.0.3",
+    "@rollup/plugin-commonjs": "^13.0.0",
+    "@rollup/plugin-node-resolve": "^8.0.1",
+    "rollup": "^2.1.0",
+    "web-vitals": "^0.2.2"
   },
-  "license": "OSL-3.0"
+  "scripts": {
+    "build:js": "rollup -c"
+  },
+  "license": "GPL-3"
 }
