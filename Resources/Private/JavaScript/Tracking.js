@@ -10,10 +10,36 @@ export const load = addEventListener('DOMContentLoaded', function() {
 
     let trackWebVital = createApiReporter('/webvitals/track/', {
         initial: {
-            nodeReference: nodeReference,
-            siteReference: siteReference,
-            nodeDimensions: nodeDimensions,
-        }
+            'webVitalsMeasure[nodeReference]': nodeReference,
+            'webVitalsMeasure[siteReference]': siteReference,
+            'webVitalsMeasure[nodeDimensions]': nodeDimensions,
+        },
+        mapMetric: (metric) => {
+            switch (metric.name) {
+                case 'LCP': {
+                    const entry = metric.entries[metric.entries.length - 1] // use the last
+                    return {
+                        'webVitalsMeasure[lcp]': metric.value
+                    }
+                }
+                case 'CLS': {
+                    return {
+                        'webVitalsMeasure[cls]': metric.value
+                    }
+                }
+                case 'FID': {
+                    const entry = metric.entries[0]
+                    return {
+                        'webVitalsMeasure[fid]': metric.value
+                    }
+                }
+
+                // default name –> value mapping
+                default:
+                    const name = 'webVitalsMeasure[' + [metric.name] + ']';
+                    return { name: metric.value }
+            }
+        },
     });
 
 
