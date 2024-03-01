@@ -1,16 +1,16 @@
 {
-  "name": "td-webvitals",
-  "description": "Web Vitals measurement",
-  "version": "1.0.0",
-  "author": "Stefan Regniet <s.regniet@techdivision.com>",
-  "maintainers": [
-    {
-      "email": "s.regniet@techdivision.com",
-      "name": "Stefan Regniet"
-    }
-  ],
-  "dependencies": {
-    "web-vitals": "*"
-  },
-  "license": "OSL-3.0"
+    "name": "td-webvitals",
+    "description": "Web Vitals measurement",
+    "version": "1.0.0",
+    "author": "Stefan Regniet <s.regniet@techdivision.com>",
+    "maintainers": [
+        {
+            "email": "s.regniet@techdivision.com",
+            "name": "Stefan Regniet"
+        }
+    ],
+    "dependencies": {
+        "web-vitals": "*"
+    },
+    "license": "OSL-3.0"
 }

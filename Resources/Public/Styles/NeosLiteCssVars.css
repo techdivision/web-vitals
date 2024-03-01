@@ -40,9 +40,9 @@
     --spacing-Half: 8px;
     --spacing-Quarter: 4px;
     --size-SidebarWidth: 320px;
-    --transition-Fast: .1s;
-    --transition-Default: .25s;
-    --transition-Slow: .5s;
+    --transition-Fast: 0.1s;
+    --transition-Default: 0.25s;
+    --transition-Slow: 0.5s;
     --zIndex-SecondaryToolbar-LinkIconButtonFlyout: 1;
     --zIndex-FlashMessageContainer: 6;
     --zIndex-LoadingIndicatorContainer: 5;
@@ -75,9 +75,9 @@
     --fontsCopy-Family: Noto Sans;
     --fontsCopy-Style: Regular;
     --fontsCopy-CssWeight: 400;
-    --colors-PrimaryViolet: #26224C;
+    --colors-PrimaryViolet: #26224c;
     --colors-PrimaryVioletHover: #342f5f;
-    --colors-PrimaryBlue: #00ADEE;
+    --colors-PrimaryBlue: #00adee;
     --colors-PrimaryBlueHover: #35c3f8;
     --colors-ContrastDarkest: #141414;
     --colors-ContrastDarker: #222;
@@ -92,5 +92,5 @@
     --colors-WarnHover: #fda23d;
     --colors-Error: #ff460d;
     --colors-ErrorHover: #ff6a3c;
-    --colors-UncheckedCheckboxTick: #5B5B5B;
+    --colors-UncheckedCheckboxTick: #5b5b5b;
 }

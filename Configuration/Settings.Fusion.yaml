@@ -1,0 +1,4 @@
+Neos:
+  Fusion:
+    defaultContext:
+      WebVitals.Dimensions: 'TechDivision\WebVitals\Eel\DimensionsHelper'

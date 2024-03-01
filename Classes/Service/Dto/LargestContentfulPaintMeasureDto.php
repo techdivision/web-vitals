@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace TechDivision\WebVitals\Service\Dto;
 
-use Neos\Flow\Annotations as Flow;
-
 /**
  * This file is part of the TechDivision.WebVitals package.
  *
@@ -17,9 +15,9 @@ use Neos\Flow\Annotations as Flow;
 
 class LargestContentfulPaintMeasureDto extends AbstractMeasureDto
 {
-    public static $shortName = 'lcp';
-    public static $name = 'Largest Contentful Paint';
-    public static $minimumThreshold = '2500';
-    public static $maximumThreshold = '4000';
-    public static $unit = 'ms';
+    public static string $shortName = 'lcp';
+    public static string $name = 'Largest Contentful Paint';
+    public static string $minimumThreshold = '2500';
+    public static string $maximumThreshold = '4000';
+    public static string $unit = 'ms';
 }

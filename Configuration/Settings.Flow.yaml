@@ -1,0 +1,6 @@
+Neos:
+  Flow:
+    mvc:
+      routes:
+        'TechDivision.WebVitals':
+          position: 'before Neos.Neos'

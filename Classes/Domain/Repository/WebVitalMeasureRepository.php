@@ -1,9 +1,11 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TechDivision\WebVitals\Domain\Repository;
 
+use DateTime;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Persistence\Exception\InvalidQueryException;
 use Neos\Flow\Persistence\Repository;
 
 /**
@@ -22,25 +24,26 @@ use Neos\Flow\Persistence\Repository;
  */
 class WebVitalMeasureRepository extends Repository
 {
-
     /**
      * @param string $nodeIdentifier
      * @param string $dimensionsHash
      * @param string $type
-     * @param \DateTime $startDate
+     * @param DateTime $startDate
      * @return int
-     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      */
-    public function getNumberOfTotalMeasures($nodeIdentifier, $dimensionsHash, $type, $startDate): int
-    {
+    public function getNumberOfTotalMeasures(
+        string $nodeIdentifier,
+        string $dimensionsHash,
+        string $type,
+        DateTime $startDate
+    ): int {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('nodeReference', $nodeIdentifier),
                 $query->equals('nodeDimensions', $dimensionsHash),
-                $query->logicalNot(
-                    $query->equals($type, null)
-                ),
+                $query->logicalNot($query->equals($type, null)),
                 $query->greaterThanOrEqual('entryDate', $startDate)
             )
         );
@@ -51,21 +54,24 @@ class WebVitalMeasureRepository extends Repository
      * @param string $nodeIdentifier
      * @param string $dimensionsHash
      * @param string $type
-     * @param \DateTime $startDate
-     * @param int $threshold
+     * @param DateTime $startDate
+     * @param string $threshold
      * @return int
-     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      */
-    public function getNumberOfMeasuresLowerThanThreshold($nodeIdentifier = null, $dimensionsHash, $type, $startDate, $threshold): int
-    {
+    public function getNumberOfMeasuresLowerThanThreshold(
+        $nodeIdentifier,
+        string $dimensionsHash,
+        string $type,
+        DateTime $startDate,
+        string $threshold
+    ): int {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('nodeReference', $nodeIdentifier),
                 $query->equals('nodeDimensions', $dimensionsHash),
-                $query->logicalNot(
-                    $query->equals($type, null)
-                ),
+                $query->logicalNot($query->equals($type, null)),
                 $query->greaterThanOrEqual('entryDate', $startDate),
                 $query->lessThanOrEqual($type, $threshold)
             )
@@ -77,21 +83,24 @@ class WebVitalMeasureRepository extends Repository
      * @param string $nodeIdentifier
      * @param string $dimensionsHash
      * @param string $type
-     * @param \DateTime $startDate
-     * @param int $threshold
+     * @param DateTime $startDate
+     * @param string $threshold
      * @return int
-     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      */
-    public function getNumberOfMeasuresHigherThanThreshold($nodeIdentifier, $dimensionsHash, $type, $startDate, $threshold): int
-    {
+    public function getNumberOfMeasuresHigherThanThreshold(
+        string $nodeIdentifier,
+        string $dimensionsHash,
+        string $type,
+        DateTime $startDate,
+        string $threshold
+    ): int {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('nodeReference', $nodeIdentifier),
                 $query->equals('nodeDimensions', $dimensionsHash),
-                $query->logicalNot(
-                    $query->equals($type, null)
-                ),
+                $query->logicalNot($query->equals($type, null)),
                 $query->greaterThanOrEqual('entryDate', $startDate),
                 $query->greaterThan($type, $threshold)
             )
@@ -102,19 +111,17 @@ class WebVitalMeasureRepository extends Repository
     /**
      * @param string $siteNodeName
      * @param string $type
-     * @param \DateTime $startDate
+     * @param DateTime $startDate
      * @return int
-     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      */
-    public function getNumberOfTotalMeasuresForEntireSite($siteNodeName, $type, $startDate): int
+    public function getNumberOfTotalMeasuresForEntireSite(string $siteNodeName, string $type, DateTime $startDate): int
     {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('siteReference', $siteNodeName),
-                $query->logicalNot(
-                    $query->equals($type, null)
-                ),
+                $query->logicalNot($query->equals($type, null)),
                 $query->greaterThanOrEqual('entryDate', $startDate)
             )
         );
@@ -124,20 +131,22 @@ class WebVitalMeasureRepository extends Repository
     /**
      * @param string $siteNodeName
      * @param string $type
-     * @param \DateTime $startDate
-     * @param int $threshold
+     * @param DateTime $startDate
+     * @param string $threshold
      * @return int
-     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      */
-    public function getNumberOfMeasuresLowerThanThresholdForEntireSite($siteNodeName, $type, $startDate, $threshold): int
-    {
+    public function getNumberOfMeasuresLowerThanThresholdForEntireSite(
+        string $siteNodeName,
+        string $type,
+        DateTime $startDate,
+        string $threshold
+    ): int {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('siteReference', $siteNodeName),
-                $query->logicalNot(
-                    $query->equals($type, null)
-                ),
+                $query->logicalNot($query->equals($type, null)),
                 $query->greaterThanOrEqual('entryDate', $startDate),
                 $query->lessThanOrEqual($type, $threshold)
             )
@@ -148,20 +157,22 @@ class WebVitalMeasureRepository extends Repository
     /**
      * @param string $siteNodeName
      * @param string $type
-     * @param \DateTime $startDate
-     * @param int $threshold
+     * @param DateTime $startDate
+     * @param string $threshold
      * @return int
-     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      */
-    public function getNumberOfMeasuresHigherThanThresholdForEntireSite($siteNodeName, $type, $startDate, $threshold): int
-    {
+    public function getNumberOfMeasuresHigherThanThresholdForEntireSite(
+        string $siteNodeName,
+        string $type,
+        DateTime $startDate,
+        string $threshold
+    ): int {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('siteReference', $siteNodeName),
-                $query->logicalNot(
-                    $query->equals($type, null)
-                ),
+                $query->logicalNot($query->equals($type, null)),
                 $query->greaterThanOrEqual('entryDate', $startDate),
                 $query->greaterThan($type, $threshold)
             )

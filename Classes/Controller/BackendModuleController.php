@@ -1,11 +1,12 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TechDivision\WebVitals\Controller;
 
-use TechDivision\WebVitals\Exception\InvalidConfigurationException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\Exception\StopActionException;
+use Neos\Flow\Persistence\Exception\InvalidQueryException;
 use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\CreateContentContextTrait;
 use Neos\Neos\Domain\Model\Site;
@@ -29,9 +30,7 @@ use TechDivision\WebVitals\Service\Dto\TimeToFirstByteMeasureDto;
 
 class BackendModuleController extends ActionController
 {
-
     use CreateContentContextTrait;
-
 
     /**
      * @Flow\InjectConfiguration(package="TechDivision.WebVitals", path="backendModule.defaultFromDate")
@@ -52,21 +51,25 @@ class BackendModuleController extends ActionController
 
     /**
      * @return void
+     * @throws InvalidQueryException
+     * @throws StopActionException
      */
-    public function indexAction()
+    public function indexAction(): void
     {
         $this->view->assignMultiple([
             LargestContentfulPaintMeasureDto::$shortName => $this->getData(new LargestContentfulPaintMeasureDto()),
             FirstInputDelayMeasureDto::$shortName => $this->getData(new FirstInputDelayMeasureDto()),
             CumulativeLayoutShiftMeasureDto::$shortName => $this->getData(new CumulativeLayoutShiftMeasureDto()),
             TimeToFirstByteMeasureDto::$shortName => $this->getData(new TimeToFirstByteMeasureDto()),
-            FirstContentfulPaintMeasureDto::$shortName => $this->getData(new FirstContentfulPaintMeasureDto())
+            FirstContentfulPaintMeasureDto::$shortName => $this->getData(new FirstContentfulPaintMeasureDto()),
         ]);
     }
 
     /**
      * @param AbstractMeasureDto $dto
-     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     * @return array
+     * @throws InvalidQueryException
+     * @throws StopActionException
      */
     protected function getData(AbstractMeasureDto $dto): array
     {
@@ -75,17 +78,40 @@ class BackendModuleController extends ActionController
         $currentSite = $contentContext->getCurrentSite();
         $currentSiteNodeName = $currentSite->getNodeName();
 
-        $fromDateArgument = isset($this->defaultFromDate) ? $this->defaultFromDate : '3 months ago';
+        $fromDateArgument = $this->defaultFromDate ?? '3 months ago';
         try {
             $fromDate = new \DateTime($fromDateArgument);
         } catch (\Exception $exception) {
-            $this->throwStatus(500, null, 'Invalid date format for setting "TechDivision.WebVitals.backendModule.defaultFromDate"');
+            $this->throwStatus(
+                500,
+                null,
+                'Invalid date format for setting "TechDivision.WebVitals.backendModule.defaultFromDate"'
+            );
         }
 
-        $total = $this->webVitalMeasureRepository->getNumberOfTotalMeasuresForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate);
-        $low = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThresholdForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate, $dto::$minimumThreshold);
-        $lowAndMedium = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThresholdForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate, $dto::$maximumThreshold);
-        $high = $this->webVitalMeasureRepository->getNumberOfMeasuresHigherThanThresholdForEntireSite($currentSiteNodeName, $dto::$shortName, $fromDate, $dto::$maximumThreshold);
+        $total = $this->webVitalMeasureRepository->getNumberOfTotalMeasuresForEntireSite(
+            $currentSiteNodeName,
+            $dto::$shortName,
+            $fromDate
+        );
+        $low = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThresholdForEntireSite(
+            $currentSiteNodeName,
+            $dto::$shortName,
+            $fromDate,
+            $dto::$minimumThreshold
+        );
+        $lowAndMedium = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThresholdForEntireSite(
+            $currentSiteNodeName,
+            $dto::$shortName,
+            $fromDate,
+            $dto::$maximumThreshold
+        );
+        $high = $this->webVitalMeasureRepository->getNumberOfMeasuresHigherThanThresholdForEntireSite(
+            $currentSiteNodeName,
+            $dto::$shortName,
+            $fromDate,
+            $dto::$maximumThreshold
+        );
         $toDate = new \DateTime();
 
         $dto->setNumberOfTotalMeasures($total);

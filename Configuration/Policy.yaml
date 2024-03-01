@@ -9,11 +9,9 @@ privilegeTargets:
 roles:
   'Neos.Flow:Everybody':
     privileges:
-      -
-        privilegeTarget: 'TechDivision.WebVitals.AllTrackingControllerActions'
+      - privilegeTarget: 'TechDivision.WebVitals.AllTrackingControllerActions'
         permission: GRANT
   'Neos.Neos:Editor':
     privileges:
-      -
-        privilegeTarget: 'TechDivision.WebVitals:BackendModule'
+      - privilegeTarget: 'TechDivision.WebVitals:BackendModule'
         permission: GRANT

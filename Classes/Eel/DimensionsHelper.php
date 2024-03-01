@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TechDivision\WebVitals\Eel;
 
@@ -23,7 +23,6 @@ use Neos\Eel\ProtectedContextAwareInterface;
  */
 class DimensionsHelper implements ProtectedContextAwareInterface
 {
-
     /**
      * @param NodeInterface $node
      * @return string

@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace TechDivision\WebVitals\Service\DataSource;
 
 use DateTime;
+use Exception;
 use InvalidArgumentException;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Persistence\Doctrine\QueryResult;
+use Neos\Flow\Persistence\Exception\InvalidQueryException;
 use Neos\Neos\Service\DataSource\AbstractDataSource;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use TechDivision\WebVitals\Domain\Repository\WebVitalMeasureRepository;
@@ -46,24 +47,24 @@ class WebVitalsDataSource extends AbstractDataSource
      *
      * {@inheritdoc}
      */
-    public function getData(NodeInterface $node = null, array $arguments = []): array
+    public function getData(NodeInterface $node = null, array $arguments = []): ?array
     {
         if (!isset($arguments['measure'])) {
             throw new InvalidArgumentException('Missing "measure" argument', 1416864525);
         }
 
-        $startDateArgument = isset($arguments['startDate']) ? $arguments['startDate'] : '3 months ago';
-        $endDateArgument = isset($arguments['endDate']) ? $arguments['endDate'] : 'now';
+        $startDateArgument = $arguments['startDate'] ?? '3 months ago';
+        $endDateArgument = $arguments['endDate'] ?? 'now';
 
         try {
             $startDate = new DateTime($startDateArgument);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return ['error' => ['message' => 'Invalid date format for argument "startDate"', 'code' => 1417435564]];
         }
 
         try {
             $endDate = new DateTime($endDateArgument);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return ['error' => ['message' => 'Invalid date format for argument "endDate"', 'code' => 1417435581]];
         }
 
@@ -71,46 +72,70 @@ class WebVitalsDataSource extends AbstractDataSource
             switch ($arguments['measure']) {
                 case LargestContentfulPaintMeasureDto::$shortName:
                     return $this->calculateData(new LargestContentfulPaintMeasureDto(), $node, $startDate, $endDate);
-                break;
+                    break;
                 case FirstInputDelayMeasureDto::$shortName:
                     return $this->calculateData(new FirstInputDelayMeasureDto(), $node, $startDate, $endDate);
-                break;
+                    break;
                 case CumulativeLayoutShiftMeasureDto::$shortName:
                     return $this->calculateData(new CumulativeLayoutShiftMeasureDto(), $node, $startDate, $endDate);
-                break;
+                    break;
                 case TimeToFirstByteMeasureDto::$shortName:
                     return $this->calculateData(new TimeToFirstByteMeasureDto(), $node, $startDate, $endDate);
-                break;
+                    break;
                 case FirstContentfulPaintMeasureDto::$shortName:
                     return $this->calculateData(new FirstContentfulPaintMeasureDto(), $node, $startDate, $endDate);
-                break;
+                    break;
             }
         } catch (Exception $exception) {
             return [
                 'error' => [
                     'message' => $exception->getMessage(),
-                    'code' => $exception->getCode()
-                ]
+                    'code' => $exception->getCode(),
+                ],
             ];
         }
+        return null;
     }
 
     /**
      * @param AbstractMeasureDto $dto
      * @param NodeInterface $node
      * @param DateTime $fromDate
-     * @param DateTime $endDate
-     * @throws \Neos\Flow\Persistence\Exception\InvalidQueryException
+     * @param DateTime $toDate
      * @return array
+     * @throws InvalidQueryException
      */
-    protected function calculateData(AbstractMeasureDto $dto, NodeInterface $node, \DateTime $fromDate, \DateTime $toDate)
+    protected function calculateData(AbstractMeasureDto $dto, NodeInterface $node, DateTime $fromDate, DateTime $toDate)
     {
         $dimensions = $node->getDimensions();
         $dimensionsHash = Utility::sortDimensionValueArrayAndReturnDimensionsHash($dimensions);
-        $total = $this->webVitalMeasureRepository->getNumberOfTotalMeasures($node->getIdentifier(), $dimensionsHash, $dto::$shortName, $fromDate);
-        $low = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThreshold($node->getIdentifier(), $dimensionsHash, $dto::$shortName, $fromDate, $dto::$minimumThreshold);
-        $lowAndMedium = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThreshold( $node->getIdentifier(), $dimensionsHash, $dto::$shortName, $fromDate, $dto::$maximumThreshold);
-        $high = $this->webVitalMeasureRepository->getNumberOfMeasuresHigherThanThreshold($node->getIdentifier(), $dimensionsHash, $dto::$shortName, $fromDate, $dto::$maximumThreshold);
+        $total = $this->webVitalMeasureRepository->getNumberOfTotalMeasures(
+            $node->getIdentifier(),
+            $dimensionsHash,
+            $dto::$shortName,
+            $fromDate
+        );
+        $low = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThreshold(
+            $node->getIdentifier(),
+            $dimensionsHash,
+            $dto::$shortName,
+            $fromDate,
+            $dto::$minimumThreshold
+        );
+        $lowAndMedium = $this->webVitalMeasureRepository->getNumberOfMeasuresLowerThanThreshold(
+            $node->getIdentifier(),
+            $dimensionsHash,
+            $dto::$shortName,
+            $fromDate,
+            $dto::$maximumThreshold
+        );
+        $high = $this->webVitalMeasureRepository->getNumberOfMeasuresHigherThanThreshold(
+            $node->getIdentifier(),
+            $dimensionsHash,
+            $dto::$shortName,
+            $fromDate,
+            $dto::$maximumThreshold
+        );
 
         $dto->setNumberOfTotalMeasures($total);
         $dto->setNumberOfLowMeasures($low);
