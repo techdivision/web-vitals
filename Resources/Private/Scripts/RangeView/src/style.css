@@ -101,13 +101,11 @@
     background: var(--colors-ContrastBrighter);
     color: var(--colors-ContrastDarkest);
     font-size: 8px;
-    min-width:20px;
+    min-width: 20px;
     padding: 2px;
     text-align: center;
 }
 
 .infopanel__total:after {
-    content: "x";
+    content: 'x';
 }
-
-

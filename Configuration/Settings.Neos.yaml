@@ -1,0 +1,27 @@
+Neos:
+  Neos:
+    fusion:
+      autoInclude:
+        "TechDivision.WebVitals": true
+    userInterface:
+      translation:
+        autoInclude:
+          TechDivision.WebVitals:
+            - "NodeTypes/*"
+            - "BackendModule"
+    modules:
+      "management":
+        submodules:
+          "web-vitals":
+            label: "WebVitals"
+            controller: 'TechDivision\WebVitals\Controller\BackendModuleController'
+            description: "Web Vitals Description"
+            icon: "icon-line-chart"
+    Ui:
+      resources:
+        stylesheets:
+          "TechDivision.WebVitals:RangeView":
+            resource: "resource://TechDivision.WebVitals/Public/RangeView/Plugin.css"
+        javascript:
+          "TechDivision.WebVitals:RangeView":
+            resource: "resource://TechDivision.WebVitals/Public/RangeView/Plugin.js"

@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace TechDivision\WebVitals\Service\Dto;
 
-use Neos\Flow\Annotations as Flow;
-
 /**
  * This file is part of the TechDivision.WebVitals package.
  *
@@ -17,9 +15,9 @@ use Neos\Flow\Annotations as Flow;
 
 class TimeToFirstByteMeasureDto extends AbstractMeasureDto
 {
-    public static $shortName = 'ttfb';
-    public static $name = 'Time to first byte';
-    public static $minimumThreshold = '200';
-    public static $maximumThreshold = '600';
-    public static $unit = 'ms';
+    public static string $shortName = 'ttfb';
+    public static string $name = 'Time to first byte';
+    public static string $minimumThreshold = '200';
+    public static string $maximumThreshold = '600';
+    public static string $unit = 'ms';
 }

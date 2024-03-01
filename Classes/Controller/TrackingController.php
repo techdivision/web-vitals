@@ -1,11 +1,12 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TechDivision\WebVitals\Controller;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
 use TechDivision\WebVitals\Domain\Model\WebVitalMeasure;
 use TechDivision\WebVitals\Domain\Repository\WebVitalMeasureRepository;
 
@@ -21,7 +22,6 @@ use TechDivision\WebVitals\Domain\Repository\WebVitalMeasureRepository;
 
 class TrackingController extends ActionController
 {
-
     /**
      * @var WebVitalMeasureRepository
      * @Flow\Inject
@@ -31,9 +31,8 @@ class TrackingController extends ActionController
     /**
      * initialize the track action
      */
-    protected function initializeTrackAction()
+    protected function initializeTrackAction(): void
     {
-        /** @var PropertyMappingConfiguration $propertyMappingConfiguration */
         $propertyMappingConfiguration = $this->arguments['webVitalMeasure']->getPropertyMappingConfiguration();
         $propertyMappingConfiguration->allowProperties(
             'siteReference',
@@ -46,17 +45,18 @@ class TrackingController extends ActionController
             'fcp'
         );
         $propertyMappingConfiguration->setTypeConverterOption(
-            \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class,
-            \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
-            TRUE
+            PersistentObjectConverter::class,
+            PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+            true
         );
     }
 
     /**
      * @param WebVitalMeasure $webVitalMeasure
      * @return false|string
+     * @throws IllegalObjectTypeException
      */
-    public function trackAction(WebVitalMeasure $webVitalMeasure): ?string
+    public function trackAction(WebVitalMeasure $webVitalMeasure): false|string
     {
         $httpRequest = $this->request->getHttpRequest();
         // we only allow referred requests.

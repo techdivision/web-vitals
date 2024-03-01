@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace TechDivision\WebVitals\Service\Dto;
 
-use Neos\Flow\Annotations as Flow;
-
 /**
  * This file is part of the TechDivision.WebVitals package.
  *
@@ -17,9 +15,9 @@ use Neos\Flow\Annotations as Flow;
 
 class FirstInputDelayMeasureDto extends AbstractMeasureDto
 {
-    public static $shortName = 'fid';
-    public static $name = 'First input delay';
-    public static $minimumThreshold = '100';
-    public static $maximumThreshold = '300';
-    public static $unit = 'ms';
+    public static string $shortName = 'fid';
+    public static string $name = 'First input delay';
+    public static string $minimumThreshold = '100';
+    public static string $maximumThreshold = '300';
+    public static string $unit = 'ms';
 }

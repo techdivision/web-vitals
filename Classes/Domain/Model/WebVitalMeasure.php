@@ -1,8 +1,10 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TechDivision\WebVitals\Domain\Model;
 
+use DateTime;
+use Exception;
 use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,8 +22,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @Flow\Entity
  * @api
  */
-class WebVitalMeasure {
-
+class WebVitalMeasure
+{
     /**
      * @var string
      * @ORM\Id
@@ -85,21 +87,21 @@ class WebVitalMeasure {
 
     /**
      * entryDate
-     * @var \DateTime
+     * @var DateTime
      */
     protected $entryDate;
 
     /**
      * WebVitalMeasure constructor.
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {
-        $this->entryDate = new \DateTime();
+        $this->entryDate = new DateTime();
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getCls(): ?float
     {
@@ -115,7 +117,7 @@ class WebVitalMeasure {
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getFcp(): ?float
     {
@@ -131,7 +133,7 @@ class WebVitalMeasure {
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getFid(): ?float
     {
@@ -147,7 +149,7 @@ class WebVitalMeasure {
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getLcp(): ?float
     {
@@ -163,7 +165,7 @@ class WebVitalMeasure {
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getTtfb(): ?float
     {
@@ -189,7 +191,7 @@ class WebVitalMeasure {
     /**
      * @param string $siteReference
      */
-    public function setSiteReference(string $siteReference)
+    public function setSiteReference(string $siteReference): void
     {
         $this->siteReference = $siteReference;
     }
@@ -197,7 +199,7 @@ class WebVitalMeasure {
     /**
      * @return string
      */
-    public function getNodeReference()
+    public function getNodeReference(): string
     {
         return $this->nodeReference;
     }
@@ -205,7 +207,7 @@ class WebVitalMeasure {
     /**
      * @param string $nodeReference
      */
-    public function setNodeReference($nodeReference)
+    public function setNodeReference($nodeReference): void
     {
         $this->nodeReference = $nodeReference;
     }
@@ -213,7 +215,7 @@ class WebVitalMeasure {
     /**
      * @return string
      */
-    public function getNodeDimensions()
+    public function getNodeDimensions(): string
     {
         return $this->nodeDimensions;
     }
@@ -221,16 +223,15 @@ class WebVitalMeasure {
     /**
      * @param string $nodeDimensions
      */
-    public function setNodeDimensions($nodeDimensions)
+    public function setNodeDimensions($nodeDimensions): void
     {
         $this->nodeDimensions = $nodeDimensions;
     }
 
-
     /**
      * @return string
      */
-    public function getPersistenceObjectIdentifier()
+    public function getPersistenceObjectIdentifier(): string
     {
         return $this->Persistence_Object_Identifier;
     }
@@ -238,24 +239,23 @@ class WebVitalMeasure {
     /**
      * @param string $Persistence_Object_Identifier
      */
-    public function setPersistenceObjectIdentifier($Persistence_Object_Identifier)
+    public function setPersistenceObjectIdentifier($Persistence_Object_Identifier): void
     {
         $this->Persistence_Object_Identifier = $Persistence_Object_Identifier;
     }
 
-
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getEntryDate(): \DateTime
+    public function getEntryDate(): DateTime
     {
         return $this->entryDate;
     }
 
     /**
-     * @param \DateTime $entryDate
+     * @param DateTime $entryDate
      */
-    public function setEntryDate(\DateTime $entryDate)
+    public function setEntryDate(DateTime $entryDate): void
     {
         $this->entryDate = $entryDate;
     }
