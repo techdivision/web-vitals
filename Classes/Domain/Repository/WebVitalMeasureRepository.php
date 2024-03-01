@@ -55,7 +55,7 @@ class WebVitalMeasureRepository extends Repository
      * @param string $dimensionsHash
      * @param string $type
      * @param DateTime $startDate
-     * @param int $threshold
+     * @param string $threshold
      * @return int
      * @throws InvalidQueryException
      */
@@ -64,7 +64,7 @@ class WebVitalMeasureRepository extends Repository
         string $dimensionsHash,
         string $type,
         DateTime $startDate,
-        int $threshold
+        string $threshold
     ): int {
         $query = $this->createQuery();
         $query->matching(
@@ -84,7 +84,7 @@ class WebVitalMeasureRepository extends Repository
      * @param string $dimensionsHash
      * @param string $type
      * @param DateTime $startDate
-     * @param int $threshold
+     * @param string $threshold
      * @return int
      * @throws InvalidQueryException
      */
@@ -93,7 +93,7 @@ class WebVitalMeasureRepository extends Repository
         string $dimensionsHash,
         string $type,
         DateTime $startDate,
-        int $threshold
+        string $threshold
     ): int {
         $query = $this->createQuery();
         $query->matching(
@@ -132,7 +132,7 @@ class WebVitalMeasureRepository extends Repository
      * @param string $siteNodeName
      * @param string $type
      * @param DateTime $startDate
-     * @param int $threshold
+     * @param string $threshold
      * @return int
      * @throws InvalidQueryException
      */
@@ -140,7 +140,7 @@ class WebVitalMeasureRepository extends Repository
         string $siteNodeName,
         string $type,
         DateTime $startDate,
-        int $threshold
+        string $threshold
     ): int {
         $query = $this->createQuery();
         $query->matching(
@@ -158,7 +158,7 @@ class WebVitalMeasureRepository extends Repository
      * @param string $siteNodeName
      * @param string $type
      * @param DateTime $startDate
-     * @param int $threshold
+     * @param string $threshold
      * @return int
      * @throws InvalidQueryException
      */
@@ -166,7 +166,7 @@ class WebVitalMeasureRepository extends Repository
         string $siteNodeName,
         string $type,
         DateTime $startDate,
-        int $threshold
+        string $threshold
     ): int {
         $query = $this->createQuery();
         $query->matching(
